@@ -17,9 +17,6 @@ describe('App', () => {
         test('should return 404 error if endpoint is misspelled', () => {
             return request(app).get("/api/topic")
             .expect(404)
-            .then((result) => {
-                console.log(result);
-            })
         });
         test('should respond with a status of 200 & array of topics objects with properties of slug and description', () => {
             return request(app).get("/api/topics")
