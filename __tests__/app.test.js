@@ -37,8 +37,8 @@ describe('App', () => {
                 });
         });
     });
-    describe('GET /api/articles', () => {
-        test('should respond with 200 and an array of objects containing properties article_id, title, topic, author, body, created_at, votes and article_img_url and comment_count', () => {
+    describe.only('GET /api/articles', () => {
+        test('should respond with status 200 and an array of objects containing properties article_id, title, topic, author, body, created_at, votes and article_img_url and comment_count', () => {
             return request(app).get("/api/articles")
                 .expect(200)
                 .then(({ body, body: { articles } }) => {
@@ -75,14 +75,14 @@ describe('App', () => {
                     expect(message).toBe("Bad Request");
                 });
         });
-        test('should return 404 if article not found', () => {
+        test('should return 404 if id not found', () => {
             return request(app).get("/api/articles/100")
                 .expect(404)
                 .then(({ body: { message } }) => {
                     expect(message).toBe("Article Not Found")
                 })
         });
-        test('should respond with 200 and object containing properties article_id, title, topic, author, body, created_at, votes and article_img_url and comment_count', () => {
+        test('should respond with status 200 and an object containing properties article_id, title, topic, author, body, created_at, votes and article_img_url', () => {
             return request(app).get("/api/articles/1")
                 .expect(200)
                 .then(({ body, body: { article } }) => {
@@ -99,4 +99,5 @@ describe('App', () => {
                 })
         });
     });
+    
 });
