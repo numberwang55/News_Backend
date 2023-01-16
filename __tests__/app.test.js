@@ -13,11 +13,13 @@ afterAll(() => {
 })
 
 describe('App', () => {
-    describe('GET /api/topics', () => {
-        test('should return 404 error if endpoint is misspelled', () => {
+    describe('Error-handling - 404 error for incorrect endpoint', () => {
+        test('should return 404 error if an endpoint is misspelled', () => {
             return request(app).get("/api/topic")
                 .expect(404)
         });
+    });
+    describe('GET /api/topics', () => {
         test('should respond with a status of 200 & array of topics objects with properties of slug and description', () => {
             return request(app).get("/api/topics")
                 .expect(200)
@@ -36,10 +38,6 @@ describe('App', () => {
         });
     });
     describe('GET /api/articles', () => {
-        test('should respond with 404 if incorrect endpoint', () => {
-            return request(app).get("/api/article")
-                .expect(404)
-        });
         test('should respond with 200 and an array of objects containing properties article_id, title, topic, author, body, created_at, votes and article_img_url and comment_count', () => {
             return request(app).get("/api/articles")
                 .expect(200)

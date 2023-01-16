@@ -1,7 +1,7 @@
 const {
     fetchTopics,
     fetchArticles
-} = require("../models/news_model");
+} = require("../models");
 
 exports.getTopics = (request, response, next) => {
     fetchTopics().then((topics) => {
