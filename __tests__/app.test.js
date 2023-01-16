@@ -35,4 +35,30 @@ describe('App', () => {
               });
         });
     });
+    describe('GET /api/articles/:article_id', () => {
+        test('should return 404 error if endpoint is misspelled', () => {
+            return request(app).get("/api/topic")
+            .expect(404)
+        });
+        test('should return 404 error if endpoint is misspelled', () => {
+            return request(app).get("/api/topic")
+            .expect(404)
+        });
+        test('should respond with a status of 200 & array of topics objects with properties of slug and description', () => {
+            return request(app).get("/api/topics")
+            .expect(200)
+            .then((result) => {
+                const {
+                  body,
+                  body: { topics },
+                } = result;
+                expect(body).toHaveProperty("topics");
+                expect(topics.length).toBeGreaterThanOrEqual(1);
+                topics.forEach((topic) => {
+                  expect(topic).toHaveProperty("slug");
+                  expect(topic).toHaveProperty("description");
+                });
+              });
+        });
+    });
 });

@@ -8,3 +8,7 @@ exports.getTopics = (request, response, next) => {
     })
     .catch(next);
 };
+
+exports.getArticleByID = (request, response, next) => {
+    
+}
