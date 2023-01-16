@@ -1,6 +1,7 @@
 const {
-    fetchTopics
-} = require("../models/news_model");
+    fetchTopics,
+    fetchArticles
+} = require("../models");
 
 exports.getTopics = (request, response, next) => {
     fetchTopics().then((topics) => {
@@ -8,6 +9,13 @@ exports.getTopics = (request, response, next) => {
     })
     .catch(next);
 };
+
+exports.getArticles = (request, response, next) => {
+    fetchArticles().then((articles) => {
+        response.status(200).send({articles})
+    })
+    .catch(next)
+}
 
 exports.getArticleByID = (request, response, next) => {
     

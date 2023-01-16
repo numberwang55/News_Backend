@@ -2,11 +2,19 @@ const express = require("express")
 const app = express()
 const { 
     getTopics,
+    getArticles,
     getArticleByID
- } = require("./controllers/news_controller")
+} = require("./controllers")
 
 app.get("/api/topics", getTopics)
+app.get("/api/articles", getArticles)
 app.get("/api/articles/:article_id", )
+
+app.use((err, req, res, next) => {
+    if (err.status === 404) {
+      res.status(err.status).send({ message: err.message });
+    } else next(err);
+});
 
 app.use((err, request, response, next) => {
     console.log(err);
