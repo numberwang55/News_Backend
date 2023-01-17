@@ -27,8 +27,22 @@ exports.fetchArticleById = (id) => {
         WHERE article_id = $1;
         `
     return db.query(queryStr, [id]).then((result) => {
-        if (!result.rows[0]) return Promise.reject({ status: 404, msg: "Article Not Found" });
+        if (result.rowCount === 0) {
+            return Promise.reject({ status: 404, msg: "Article Not Found" });
+        }
         return result.rows[0]
+    })
+}
+
+exports.fetchCommentsByArticleId = (id) => {
+    const queryStr = `
+        SELECT * FROM comments
+        WHERE article_id = $1
+        ORDER BY created_at DESC;
+        ;
+    `
+    return db.query(queryStr, [id]).then((result) => {
+        return result.rows
     })
 }
 

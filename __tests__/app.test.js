@@ -104,6 +104,58 @@ describe('App', () => {
         })
     });
   });
+  describe('GET /api/articles/:article_id/comments', () => {
+    test("should return empty array when a valid article id has no comments", () => {
+      return request(app)
+        .get("/api/articles/2/comments")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments.length).toBe(0)
+          expect(comments).toEqual([])
+        });
+    });
+    test('200: should return array of comments for the corresponding article id. Object should contain properties comment_id, votes, created_at, author, body and article_id', () => {
+      return request(app)
+        .get("/api/articles/3/comments")
+        .expect(200)
+        .then(({ body, body: { comments } }) => {
+          expect(body).toHaveProperty("comments")
+          expect(comments.length).toBeGreaterThanOrEqual(1)
+          comments.forEach(comment => {
+            expect(comment).toHaveProperty("comment_id", expect.any(Number))
+            expect(comment).toHaveProperty("body", expect.any(String))
+            expect(comment).toHaveProperty("article_id", expect.any(Number))
+            expect(comment).toHaveProperty("author", expect.any(String))
+            expect(comment).toHaveProperty("votes", expect.any(Number))
+            expect(comment).toHaveProperty("created_at", expect.any(String))
+          })
+        })
+    });
+    test("should return the array of comments sorted by created_at in descending order", () => {
+      return request(app)
+        .get("/api/articles/3/comments")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toBeSortedBy("created_at", { descending: true });
+        });
+    });
+    test('should return 404 if id not found', () => {
+      return request(app)
+        .get("/api/articles/100/comments")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Article Not Found")
+        })
+    });
+    test('should return 400 if id is an incorrect data type', () => {
+      return request(app)
+        .get("/api/articles/abc/comments")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request")
+        })
+    });
+  });
   describe('POST /api/articles/:article_id/comments', () => {
     test("201: returns the new comment object", () => {
       return request(app)
@@ -120,5 +172,5 @@ describe('App', () => {
           expect(comment).toHaveProperty("votes", 0);
         });
     });
-  });
+  })
 });
