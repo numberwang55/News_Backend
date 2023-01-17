@@ -1,7 +1,9 @@
 const {
     fetchTopics,
     fetchArticles,
-    fetchArticleById
+    fetchArticleById,
+
+    addCommentByArticleId
 } = require("../models");
 
 exports.getTopics = (request, response, next) => {
@@ -21,4 +23,13 @@ exports.getArticleByID = (request, response, next) => {
     fetchArticleById(article_id).then((article) => {
         response.status(200).send({ article })
     }).catch(next)
+}
+
+exports.postCommentByArticleId = (request, response, next) => {
+    const { article_id } = request.params
+    const { body } = request
+    Promise.all([fetchArticleById(article_id), addCommentByArticleId(article_id, { ...body })])
+        .then(([_, comment]) => {
+            response.status(201).send({ comment })
+        }).catch(next)
 }

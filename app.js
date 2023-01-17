@@ -5,14 +5,16 @@ const {
   getArticles,
   getArticleByID,
 
-  
+  postCommentByArticleId
 } = require("./controllers")
+
+app.use(express.json());
 
 app.get("/api/topics", getTopics)
 app.get("/api/articles", getArticles)
 app.get("/api/articles/:article_id", getArticleByID)
 
-app.post("/api/articles/:article_id/comments", )
+app.post("/api/articles/:article_id/comments", postCommentByArticleId)
 
 app.use("/*", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" })

@@ -109,7 +109,16 @@ describe('App', () => {
       return request(app)
         .post("/api/articles/2/comments")
         .send({ username: "icellusedkars", body: "A new comment" })
-        // .expect(201)
+        .expect(201)
+        .then(({ body, body: { comment } }) => {
+          expect(body).toHaveProperty("comment");
+          expect(comment).toHaveProperty("author", "icellusedkars");
+          expect(comment).toHaveProperty("body", "A new comment");
+          expect(comment).toHaveProperty("comment_id", 19);
+          expect(comment).toHaveProperty("created_at", expect.any(String));
+          expect(comment).toHaveProperty("article_id", 2);
+          expect(comment).toHaveProperty("votes", 0);
+        });
     });
   });
 });
