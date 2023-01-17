@@ -9,9 +9,7 @@ exports.fetchTopics = () => {
 
 exports.fetchArticles = () => {
     const queryStr = `
-    SELECT articles.article_id, articles.title, articles.topic, 
-    articles.author, articles.body, articles.created_at, articles.votes,
-    articles.article_img_url, COUNT(comment_id) as comment_count 
+    SELECT articles.*, COUNT(comment_id) as comment_count 
     FROM articles
     JOIN comments
     ON articles.article_id = comments.article_id
@@ -20,5 +18,16 @@ exports.fetchArticles = () => {
     `;
     return db.query(queryStr).then((result) => {
         return result.rows;
+    })
+}
+
+exports.fetchArticleById = (id) => {
+    const queryStr = `
+        SELECT * FROM articles
+        WHERE article_id = $1;
+        `
+    return db.query(queryStr, [id]).then((result) => {
+        if (!result.rows[0]) return Promise.reject({ status: 404, msg: "Article Not Found" });
+        return result.rows[0]
     })
 }
