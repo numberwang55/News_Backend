@@ -67,4 +67,9 @@ describe('App', () => {
                 });
         });
     });
+    describe('GET /api/articles/:article_id/comments', () => {
+      test('should ', () => {
+        
+      });
+    });
 });

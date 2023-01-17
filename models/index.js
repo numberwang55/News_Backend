@@ -22,3 +22,7 @@ exports.fetchArticles = () => {
         return result.rows;
     })
 }
+
+exports.fetchComments = () => {
+    
+}
