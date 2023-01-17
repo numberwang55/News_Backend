@@ -42,10 +42,6 @@ exports.fetchCommentsByArticleId = (id) => {
         ;
     `
     return db.query(queryStr, [id]).then((result) => {
-        if (!result.rows){
-            console.log("hi");
-            return Promise.reject({ status: 404, msg: "Path not found" });
-        } 
         return result.rows
     })
 }
