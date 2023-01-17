@@ -10,8 +10,8 @@ app.get("/api/topics", getTopics)
 app.get("/api/articles", getArticles)
 app.get("/api/articles/:article_id", getArticleByID)
 
-app.use((req, res, next) => {
-  res.status(404).send({msg: "Path not found"})
+app.use("/*", (req, res, next) => {
+  res.status(404).send({ msg: "Path not found" })
 })
 
 app.use((err, req, res, next) => {
@@ -19,7 +19,6 @@ app.use((err, req, res, next) => {
     res.status(err.status).send({ message: err.msg });
   } else next(err);
 });
-
 
 app.use((err, request, response, next) => {
   if (err.code === "22P02") {

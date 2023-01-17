@@ -31,7 +31,6 @@ describe('App', () => {
             body,
             body: { topics },
           } = result;
-          console.log(result);
           expect(body).toHaveProperty("topics");
           expect(topics.length).toBeGreaterThanOrEqual(1);
           topics.forEach((topic) => {
@@ -86,20 +85,22 @@ describe('App', () => {
           expect(message).toBe("Article Not Found")
         })
     });
-    test('should respond with status 200 and an object containing properties article_id, title, topic, author, body, created_at, votes and article_img_url', () => {
+    test('should respond with status 200 and an object containing properties article_id, title, topic, author, body, created_at, votes and article_img_url & match article for id of 1', () => {
       return request(app).get("/api/articles/1")
         .expect(200)
         .then(({ body, body: { article } }) => {
-          console.log(body);
           expect(body).toHaveProperty("article")
-          expect(article).toHaveProperty("article_id", expect.any(Number))
-          expect(article).toHaveProperty("title", expect.any(String))
-          expect(article).toHaveProperty("topic", expect.any(String))
-          expect(article).toHaveProperty("author", expect.any(String))
-          expect(article).toHaveProperty("body", expect.any(String))
-          expect(article).toHaveProperty("created_at", expect.any(String))
-          expect(article).toHaveProperty("votes", expect.any(Number))
-          expect(article).toHaveProperty("article_img_url", expect.any(String))
+          const articleId1 = {
+            article_id: 1,
+            title: 'Living in the shadow of a great man',
+            topic: 'mitch',
+            author: 'butter_bridge',
+            body: 'I find this existence challenging',
+            created_at: '2020-07-09T20:11:00.000Z',
+            votes: 100,
+            article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+          }
+          expect(article).toMatchObject(articleId1)
         })
     });
   });
