@@ -104,4 +104,12 @@ describe('App', () => {
         })
     });
   });
+  describe('POST /api/articles/:article_id/comments', () => {
+    test("201: returns the new comment object", () => {
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send({ username: "icellusedkars", body: "A new comment" })
+        // .expect(201)
+    });
+  });
 });

@@ -31,3 +31,9 @@ exports.fetchArticleById = (id) => {
         return result.rows[0]
     })
 }
+
+exports.addCommentByArticleId = (id, commentObj) => {
+    const queryStr = `
+    
+    `
+}
