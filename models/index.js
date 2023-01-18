@@ -59,3 +59,17 @@ exports.addCommentByArticleId = (id, commentObj) => {
         return result.rows[0]
     })
 }
+
+exports.updateArticleByArticleId = (id, inc_votes) => {
+    const quesryStr = `
+        UPDATE articles 
+        SET votes = votes + $1
+        WHERE article_id = $2
+        RETURNING *;
+    `;
+    return db.query(quesryStr, [inc_votes, id]).then((result) => {
+        if (result.rowCount === 0) {
+            return Promise.reject({ status: 404, msg: "Article Not Found" });
+        } else return result.rows[0]
+    })
+}

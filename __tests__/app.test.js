@@ -176,11 +176,11 @@ describe('App', () => {
       return request(app)
         .post("/api/articles/2/comments")
         .send({ username: "icellusedkars", body: "A new comment" })
-        .then(({ body, body: { comment } }) => {
+        .then(({ body: { comment } }) => {
           return request(app)
             .get("/api/articles/2/comments")
             .expect(200)
-            .then(({ body, body: { comments } }) => {
+            .then(({ body: { comments } }) => {
               expect(comments[0]).toMatchObject(comment)
             })
         })
@@ -206,8 +206,8 @@ describe('App', () => {
     test('400: incorrect data type for username value', () => {
       return request(app)
         .post("/api/articles/abc/comments")
-        .expect(400)
         .send({ username: 100, body: "A new comment" })
+        .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("Bad Request");
         });
@@ -215,11 +215,93 @@ describe('App', () => {
     test('400: post object is missing body property', () => {
       return request(app)
         .post("/api/articles/abc/comments")
-        .expect(400)
         .send({ username: "icellusedkars" })
+        .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("Bad Request");
         });
     });
   })
+  describe('PATCH /api/articles/:artice_id', () => {
+    test('200: responds with updated article with updated vote property incremented', () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: 1 })
+        .expect(200)
+        .then(({ body, body: { updated_article } }) => {
+          expect(body).toHaveProperty("updated_article");
+          expect(updated_article).toHaveProperty("votes", 101);
+          expect(updated_article).toHaveProperty("author", expect.any(String));
+          expect(updated_article).toHaveProperty("title", expect.any(String));
+          expect(updated_article).toHaveProperty("article_id", 1);
+          expect(updated_article).toHaveProperty("topic", expect.any(String));
+          expect(updated_article).toHaveProperty(
+            "article_img_url",
+            expect.any(String)
+          );
+          expect(updated_article).toHaveProperty(
+            "body",
+            expect.any(String)
+          );
+          expect(updated_article).toHaveProperty(
+            "created_at",
+            expect.any(String)
+          );
+        });
+    });
+    test('200: responds with updated article with updated vote property decremented', () => {
+      return request(app)
+        .patch("/api/articles/1")
+        .send({ inc_votes: -1 })
+        .expect(200)
+        .then(({ body, body: { updated_article } }) => {
+          console.log(updated_article);
+          expect(body).toHaveProperty("updated_article");
+          expect(updated_article).toHaveProperty("votes", 99);
+          expect(updated_article).toHaveProperty("author", expect.any(String));
+          expect(updated_article).toHaveProperty("title", expect.any(String));
+          expect(updated_article).toHaveProperty("article_id", 1);
+          expect(updated_article).toHaveProperty("topic", expect.any(String));
+          expect(updated_article).toHaveProperty(
+            "article_img_url",
+            expect.any(String)
+          );
+          expect(updated_article).toHaveProperty(
+            "body",
+            expect.any(String)
+          );
+          expect(updated_article).toHaveProperty(
+            "created_at",
+            expect.any(String)
+          );
+        });
+    });
+    test('404: if id not found', () => {
+      return request(app)
+        .patch("/api/articles/100")
+        .send({ inc_votes: 1 })
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Article Not Found");
+        });
+    });
+    test('400: incorrect data type for article_id', () => {
+      return request(app)
+      .patch("/api/articles/abc")
+      .send({ inc_votes: 1 })
+      .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request");
+        });
+    });
+    test('400: incorrect data type for inc_votes value', () => {
+      return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "abc" })
+      .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request");
+        });
+    });
+  });
 });
