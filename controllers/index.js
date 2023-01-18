@@ -3,7 +3,9 @@ const {
     fetchArticles,
     fetchArticleById,
     fetchCommentsByArticleId,
-    addCommentByArticleId
+    addCommentByArticleId,
+    updateArticleByArticleId,
+    fetchUsers
 } = require("../models");
 
 exports.getTopics = (request, response, next) => {
@@ -29,9 +31,9 @@ exports.getArticleByID = (request, response, next) => {
 exports.getCommentsByArticleId = (request, response, next) => {
     const { article_id } = request.params
     Promise.all([fetchCommentsByArticleId(article_id), fetchArticleById(article_id)])
-    .then(([comments]) => {
-        response.status(200).send({ comments })
-    }).catch(next)
+        .then(([comments]) => {
+            response.status(200).send({ comments })
+        }).catch(next)
 }
 
 exports.postCommentByArticleId = (request, response, next) => {
@@ -41,4 +43,19 @@ exports.postCommentByArticleId = (request, response, next) => {
         .then(([_, comment]) => {
             response.status(201).send({ comment })
         }).catch(next)
+}
+
+exports.patchArticleByArticleId = (request, response, next) => {
+    const { article_id } = request.params
+    const { body: { inc_votes } } = request
+    updateArticleByArticleId(article_id, inc_votes)
+        .then((updated_article) => {
+            response.status(200).send({ updated_article })
+        }).catch(next)
+}
+
+exports.getUsers = (request, response, next) => {
+    fetchUsers().then((users) => {
+        response.status(200).send({users})
+    }).catch(next)
 }
