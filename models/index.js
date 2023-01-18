@@ -45,3 +45,17 @@ exports.fetchCommentsByArticleId = (id) => {
         return result.rows
     })
 }
+
+exports.addCommentByArticleId = (id, commentObj) => {
+    const { username, body } = commentObj
+    const queryStr = `
+        INSERT INTO comments
+            (article_id, author, body)
+        VALUES
+            ($1, $2, $3)
+        RETURNING *;
+        `;
+    return db.query(queryStr, [id, username, body]).then((result) => {
+        return result.rows[0]
+    })
+}

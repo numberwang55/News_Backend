@@ -78,7 +78,7 @@ describe('App', () => {
           expect(message).toBe("Bad Request");
         });
     });
-    test('should return 404 if id not found', () => {
+    test('404: if id not found', () => {
       return request(app).get("/api/articles/100")
         .expect(404)
         .then(({ body: { message } }) => {
@@ -139,7 +139,7 @@ describe('App', () => {
           expect(comments).toBeSortedBy("created_at", { descending: true });
         });
     });
-    test('should return 404 if id not found', () => {
+    test('404: if id not found', () => {
       return request(app)
         .get("/api/articles/100/comments")
         .expect(404)
@@ -147,7 +147,7 @@ describe('App', () => {
           expect(message).toBe("Article Not Found")
         })
     });
-    test('should return 400 if id is an incorrect data type', () => {
+    test('400: if id is an incorrect data type', () => {
       return request(app)
         .get("/api/articles/abc/comments")
         .expect(400)
@@ -156,4 +156,70 @@ describe('App', () => {
         })
     });
   });
+  describe('POST /api/articles/:article_id/comments', () => {
+    test("201: returns the new comment object", () => {
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send({ username: "icellusedkars", body: "A new comment" })
+        .expect(201)
+        .then(({ body, body: { comment } }) => {
+          expect(body).toHaveProperty("comment");
+          expect(comment).toHaveProperty("author", "icellusedkars");
+          expect(comment).toHaveProperty("body", "A new comment");
+          expect(comment).toHaveProperty("comment_id", 19);
+          expect(comment).toHaveProperty("created_at", expect.any(String));
+          expect(comment).toHaveProperty("article_id", 2);
+          expect(comment).toHaveProperty("votes", 0);
+        })
+    });
+    test('200: new comment has successfully been added', () => {
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send({ username: "icellusedkars", body: "A new comment" })
+        .then(({ body, body: { comment } }) => {
+          return request(app)
+            .get("/api/articles/2/comments")
+            .expect(200)
+            .then(({ body, body: { comments } }) => {
+              expect(comments[0]).toMatchObject(comment)
+            })
+        })
+    });
+    test('404: if id not found', () => {
+      return request(app)
+        .post("/api/articles/100/comments")
+        .expect(404)
+        .send({ username: "icellusedkars", body: "A new comment" })
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Article Not Found");
+        });
+    });
+    test('400: incorrect data type for article_id', () => {
+      return request(app)
+        .post("/api/articles/abc/comments")
+        .expect(400)
+        .send({ username: "icellusedkars", body: "A new comment" })
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request");
+        });
+    });
+    test('400: incorrect data type for username value', () => {
+      return request(app)
+        .post("/api/articles/abc/comments")
+        .expect(400)
+        .send({ username: 100, body: "A new comment" })
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request");
+        });
+    });
+    test('400: post object is missing body property', () => {
+      return request(app)
+        .post("/api/articles/abc/comments")
+        .expect(400)
+        .send({ username: "icellusedkars" })
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request");
+        });
+    });
+  })
 });
