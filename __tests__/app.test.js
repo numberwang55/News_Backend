@@ -255,7 +255,6 @@ describe('App', () => {
         .send({ inc_votes: -1 })
         .expect(200)
         .then(({ body, body: { updated_article } }) => {
-          console.log(updated_article);
           expect(body).toHaveProperty("updated_article");
           expect(updated_article).toHaveProperty("votes", 99);
           expect(updated_article).toHaveProperty("author", expect.any(String));
@@ -300,7 +299,8 @@ describe('App', () => {
       .send({ inc_votes: "abc" })
       .expect(400)
         .then(({ body: { message } }) => {
-          expect(message).toBe("Bad Request");
+          console.log(message);
+          expect(message).toBe("Incorrect data type");
         });
     });
   });

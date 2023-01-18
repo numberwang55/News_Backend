@@ -67,9 +67,14 @@ exports.updateArticleByArticleId = (id, inc_votes) => {
         WHERE article_id = $2
         RETURNING *;
     `;
+    if (typeof inc_votes !== "number") {
+        return Promise.reject({ status: 400, msg: "Incorrect data type" });
+    }
     return db.query(quesryStr, [inc_votes, id]).then((result) => {
         if (result.rowCount === 0) {
+            console.log("0");
             return Promise.reject({ status: 404, msg: "Article Not Found" });
-        } else return result.rows[0]
+        } 
+        else return result.rows[0]
     })
 }
