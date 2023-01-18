@@ -6,7 +6,8 @@ const {
   getArticleByID,
   getCommentsByArticleId,
   postCommentByArticleId,
-  patchArticleByArticleId
+  patchArticleByArticleId,
+  getUsers
 } = require("./controllers")
 const {
   defaultErrorHandler,
@@ -23,6 +24,7 @@ app.get("/api/articles/:article_id", getArticleByID)
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
 app.post("/api/articles/:article_id/comments", postCommentByArticleId)
 app.patch("/api/articles/:article_id", patchArticleByArticleId)
+app.get("/api/users", getUsers)
 
 defaultErrorHandler(app)
 app.use(customErrorHAndler)

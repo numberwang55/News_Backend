@@ -4,7 +4,8 @@ const {
     fetchArticleById,
     fetchCommentsByArticleId,
     addCommentByArticleId,
-    updateArticleByArticleId
+    updateArticleByArticleId,
+    fetchUsers
 } = require("../models");
 
 exports.getTopics = (request, response, next) => {
@@ -50,4 +51,10 @@ exports.patchArticleByArticleId = (request, response, next) => {
         .then((updated_article) => {
             response.status(200).send({ updated_article })
         }).catch(next)
+}
+
+exports.getUsers = (request, response, next) => {
+    fetchUsers().then((users) => {
+        response.status(200).send({users})
+    }).catch(next)
 }

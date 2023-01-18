@@ -286,22 +286,37 @@ describe('App', () => {
     });
     test('400: incorrect data type for article_id', () => {
       return request(app)
-      .patch("/api/articles/abc")
-      .send({ inc_votes: 1 })
-      .expect(400)
+        .patch("/api/articles/abc")
+        .send({ inc_votes: 1 })
+        .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("Bad Request");
         });
     });
     test('400: incorrect data type for inc_votes value', () => {
       return request(app)
-      .patch("/api/articles/1")
-      .send({ inc_votes: "abc" })
-      .expect(400)
+        .patch("/api/articles/1")
+        .send({ inc_votes: "abc" })
+        .expect(400)
         .then(({ body: { message } }) => {
-          console.log(message);
           expect(message).toBe("Incorrect data type");
         });
+    });
+  });
+  describe('GET /api/users', () => {
+    test('200: responds with users obj containing properties username, name & avatar_url', () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body, body: { users } }) => {
+          expect(body).toHaveProperty("users")
+          expect(users).toHaveLength(4)
+          users.forEach(user => {
+            expect(user).toHaveProperty("username")
+            expect(user).toHaveProperty("name")
+            expect(user).toHaveProperty("avatar_url")
+          })
+        })
     });
   });
 });
