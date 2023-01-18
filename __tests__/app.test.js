@@ -222,4 +222,20 @@ describe('App', () => {
         });
     });
   })
+  describe('GET /api/users', () => {
+    test('200: responds with users obj containing properties username, name & avatar_url', () => {
+      return request(app)
+        .get("/api/users")
+        .expect(200)
+        .then(({ body, body: {users}}) => {
+          expect(body).toHaveProperty("users")
+          expect(users).toHaveLength(4)
+          users.forEach(user => {
+            expect(user).toHaveProperty("username")
+            expect(user).toHaveProperty("name")
+            expect(user).toHaveProperty("avatar_url")
+          })
+        })
+    });
+  });
 });

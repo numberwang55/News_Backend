@@ -59,3 +59,12 @@ exports.addCommentByArticleId = (id, commentObj) => {
         return result.rows[0]
     })
 }
+
+exports.fetchUsers = () => {
+    const queryStr = `
+        SELECT * FROM users
+    `
+    return db.query(queryStr).then((result) => {
+        return result.rows
+    })
+}

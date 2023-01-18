@@ -3,7 +3,8 @@ const {
     fetchArticles,
     fetchArticleById,
     fetchCommentsByArticleId,
-    addCommentByArticleId
+    addCommentByArticleId,
+    fetchUsers
 } = require("../models");
 
 exports.getTopics = (request, response, next) => {
@@ -40,4 +41,10 @@ exports.postCommentByArticleId = (request, response, next) => {
         .then(([_, comment]) => {
             response.status(201).send({ comment })
         }).catch(next)
+}
+
+exports.getUsers = (request, response, next) => {
+    fetchUsers().then((users) => {
+        response.status(200).send({users})
+    }).catch(next)
 }

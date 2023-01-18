@@ -6,6 +6,7 @@ const {
   getArticleByID,
   getCommentsByArticleId,
   postCommentByArticleId,
+  getUsers
 } = require("./controllers")
 const errorHandler = require("./controllers/error-handling")
 
@@ -16,6 +17,7 @@ app.get("/api/articles", getArticles)
 app.get("/api/articles/:article_id", getArticleByID)
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId)
 app.post("/api/articles/:article_id/comments", postCommentByArticleId)
+app.get("/api/users", getUsers)
 
 errorHandler(app)
 
