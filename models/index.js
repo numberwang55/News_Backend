@@ -7,7 +7,8 @@ exports.fetchTopics = () => {
     })
 }
 
-exports.fetchArticles = () => {
+exports.fetchArticles = (topic, sort_by = "created_at", order = "desc") => {
+    const queryValues = []
     const queryStr = `
     SELECT articles.*, COUNT(comment_id) as comment_count 
     FROM articles
@@ -16,7 +17,11 @@ exports.fetchArticles = () => {
     GROUP BY articles.article_id
     ORDER BY created_at DESC;
     `;
-    return db.query(queryStr).then((result) => {
+    if (topic) {
+        queryStr += `WHERE topic = $1`
+        queryValues.push(topic)
+    }
+    return db.query(queryStr, queryValues).then((result) => {
         return result.rows;
     })
 }

@@ -69,6 +69,14 @@ describe('App', () => {
           });
         });
     });
+    // Query tests
+    describe('GET /api/articles', () => {
+      test.only('200: returns articles with query topic of cats', () => {
+        return request(app)
+          .get("/api/articles")
+          .expect(200)
+      });
+    });
   });
   describe('GET /api/articles/:article_id', () => {
     test('should return 400 error if incorrect data type used as the parametric endpoint', () => {
