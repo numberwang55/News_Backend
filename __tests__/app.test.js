@@ -170,7 +170,20 @@ describe('App', () => {
           expect(comment).toHaveProperty("created_at", expect.any(String));
           expect(comment).toHaveProperty("article_id", 2);
           expect(comment).toHaveProperty("votes", 0);
-        });
+        })
+    });
+    test('200: new comment has successfully been added', () => {
+      return request(app)
+        .post("/api/articles/2/comments")
+        .send({ username: "icellusedkars", body: "A new comment" })
+        .then(({ body, body: { comment } }) => {
+          return request(app)
+            .get("/api/articles/2/comments")
+            .expect(200)
+            .then(({ body, body: { comments } }) => {
+              expect(comments[0]).toMatchObject(comment)
+            })
+        })
     });
     test('404: if id not found', () => {
       return request(app)
@@ -203,7 +216,7 @@ describe('App', () => {
       return request(app)
         .post("/api/articles/abc/comments")
         .expect(400)
-        .send({ username: "icellusedkars"})
+        .send({ username: "icellusedkars" })
         .then(({ body: { message } }) => {
           expect(message).toBe("Bad Request");
         });
