@@ -9,19 +9,32 @@ exports.fetchTopics = () => {
 
 exports.fetchArticles = (topic, sort_by = "created_at", order = "desc") => {
     const queryValues = []
-    const queryStr = `
+    const validSortByQueries = ['title', 'topic', 'author', 'body', 'created_at', 'article_img_url']
+    const validOrderQueries = ['asc', 'desc']
+    let queryStr = `
     SELECT articles.*, COUNT(comment_id) as comment_count 
     FROM articles
     JOIN comments
     ON articles.article_id = comments.article_id
     GROUP BY articles.article_id
-    ORDER BY created_at DESC;
     `;
     if (topic) {
-        queryStr += `WHERE topic = $1`
-        queryValues.push(topic)
+        queryStr += `HAVING topic = $1 `;
+        queryValues.push(topic);
     }
+
+    if (!validSortByQueries.includes(sort_by)) {
+        return Promise.reject({ status: 400, message: 'Invalid sort query' });
+    } else if (!validOrderQueries.includes(order)) {
+        return Promise.reject({ status: 400, message: 'Invalid order query' });
+    } else {
+        queryStr += `ORDER BY ${sort_by} ${order};`;
+    }
+
     return db.query(queryStr, queryValues).then((result) => {
+        if (!result.rowCount) {
+            return Promise.reject({ status: 404, message: "Article doesn't exist" });
+        }
         return result.rows;
     })
 }

@@ -70,12 +70,27 @@ describe('App', () => {
         });
     });
     // Query tests
-    describe('GET /api/articles', () => {
-      test.only('200: returns articles with query topic of cats', () => {
-        return request(app)
-          .get("/api/articles")
-          .expect(200)
-      });
+    test('200: returns articles with query topic of cats', () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({body: { articles } }) => {
+          expect(articles).toHaveLength(4)
+          articles.forEach(article => {
+            expect(article).toHaveProperty("topic", "mitch")
+          })
+        })
+    });
+    test('200: returns articles sorted by comment', () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({body: { articles } }) => {
+          expect(articles).toHaveLength(4)
+          articles.forEach(article => {
+            expect(article).toHaveProperty("topic", "mitch")
+          })
+        })
     });
   });
   describe('GET /api/articles/:article_id', () => {
