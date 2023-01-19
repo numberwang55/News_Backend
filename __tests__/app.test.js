@@ -357,7 +357,7 @@ describe('App', () => {
         });
     });
   })
-  describe('PATCH /api/articles/:artice_id', () => {
+  describe('PATCH /api/articles/:article_id', () => {
     test('200: responds with updated article with updated vote property incremented', () => {
       return request(app)
         .patch("/api/articles/1")
@@ -465,7 +465,7 @@ describe('App', () => {
           return request(app)
             .delete("/api/comments/16")
             .expect(204)
-            .then(() => {
+            .then((res) => {
               return request(app)
                 .get("/api/articles/6/comments")
                 .expect(200)
@@ -490,6 +490,25 @@ describe('App', () => {
         .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("Bad Request")
+        })
+    });
+  });
+  describe('GET /api', () => {
+    test('200: returns with JSON for the api endpoints and their details', () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body: { endpoints } }) => {
+          expect(typeof endpoints).toBe("object")
+          expect(Object.keys(endpoints)).toHaveLength(9);
+          expect(endpoints).toHaveProperty('GET /api');
+          expect(endpoints).toHaveProperty('GET /api/topics');
+          expect(endpoints).toHaveProperty('GET /api/articles');
+          expect(endpoints).toHaveProperty('GET /api/articles/:article_id');
+          expect(endpoints).toHaveProperty('GET /api/articles/:article_id/comments');
+          expect(endpoints).toHaveProperty('POST /api/articles/:article_id/comments');
+          expect(endpoints).toHaveProperty('PATCH /api/articles/:article_id');
+          expect(endpoints).toHaveProperty('GET /api/users');
         })
     });
   });
