@@ -60,7 +60,7 @@ describe('App', () => {
           })
         })
     });
-    test('should return array of objects sorted by created_at property', () => {
+    test('200: should return array of objects sorted by created_at property', () => {
       return request(app).get("/api/articles")
         .expect(200)
         .then(({ body: { articles } }) => {
@@ -85,7 +85,7 @@ describe('App', () => {
           expect(message).toBe("Article Not Found")
         })
     });
-    test('should respond with status 200 and an object containing properties article_id, title, topic, author, body, created_at, votes and article_img_url & match article for id of 1', () => {
+    test('200: object containing properties article_id, title, topic, author, body, created_at, votes and article_img_url & match article for id of 1', () => {
       return request(app).get("/api/articles/1")
         .expect(200)
         .then(({ body, body: { article } }) => {
@@ -101,6 +101,16 @@ describe('App', () => {
             article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
           }
           expect(article).toMatchObject(articleId1)
+        })
+    });
+    // comment count
+    test('200: article retrieved with id contains comment count property', () => {
+      return request(app)
+        .get("/api/articles/1")
+        .expect(200)
+        .then(({ body, body: { article } }) => {
+          expect(body).toHaveProperty("article")
+          expect(article).toHaveProperty("comment_count", 11)
         })
     });
   });
