@@ -86,7 +86,6 @@ describe('App', () => {
         .get("/api/articles?topic=cats")
         .expect(200)
         .then(({ body: { articles } }) => {
-          console.log(articles);
           expect(articles).toHaveLength(1)
           articles.forEach(article => {
             expect(article).toHaveProperty("topic", "cats")
@@ -443,6 +442,22 @@ describe('App', () => {
             expect(user).toHaveProperty("name")
             expect(user).toHaveProperty("avatar_url")
           })
+        })
+    });
+  });
+  describe('DELETE /api/comments/:comment_id', () => {
+    test('204: deletes comment for given id', () => {
+      return request(app)
+        .delete("/api/comments/1")
+        .expect(204)
+        .then(() => {
+          return request(app)
+            .get("/api/articles/1/comments")
+            .expect(404)
+            .then(({body: {message}}) => {
+              console.log(body);
+              expect(message).toBe("Article Not Found")
+            })
         })
     });
   });

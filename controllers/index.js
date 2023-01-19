@@ -5,7 +5,8 @@ const {
     fetchCommentsByArticleId,
     addCommentByArticleId,
     updateArticleByArticleId,
-    fetchUsers
+    fetchUsers,
+    removeComment
 } = require("../models");
 
 exports.getTopics = (request, response, next) => {
@@ -15,7 +16,7 @@ exports.getTopics = (request, response, next) => {
 };
 
 exports.getArticles = (request, response, next) => {
-    const {topic, sort_by, order} = request.query
+    const { topic, sort_by, order } = request.query
     fetchArticles(topic, sort_by, order).then((articles) => {
         response.status(200).send({ articles })
     }).catch(next)
@@ -55,7 +56,16 @@ exports.patchArticleByArticleId = (request, response, next) => {
 }
 
 exports.getUsers = (request, response, next) => {
-    fetchUsers().then((users) => {
-        response.status(200).send({users})
-    }).catch(next)
+    fetchUsers()
+        .then((users) => {
+            response.status(200).send({ users })
+        }).catch(next)
+}
+
+exports.deleteComment = (request, response, next) => {
+    const { comment_id } = request.params
+    removeComment(comment_id)
+        .then(() => {
+            response.status(204).send()
+        }).catch(next)
 }
