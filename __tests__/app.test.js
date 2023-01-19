@@ -56,7 +56,7 @@ describe('App', () => {
             expect(article).toHaveProperty("created_at", expect.any(String))
             expect(article).toHaveProperty("votes", expect.any(Number))
             expect(article).toHaveProperty("article_img_url", expect.any(String))
-            expect(article).toHaveProperty("comment_count", expect.any(String))
+            expect(article).toHaveProperty("comment_count", expect.any(Number))
           })
         })
     });
@@ -70,26 +70,69 @@ describe('App', () => {
         });
     });
     // Query tests
-    test('200: returns articles with query topic of cats', () => {
+    test('200: returns articles with query topic of mitch', () => {
       return request(app)
         .get("/api/articles?topic=mitch")
         .expect(200)
-        .then(({body: { articles } }) => {
-          expect(articles).toHaveLength(4)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(11)
           articles.forEach(article => {
             expect(article).toHaveProperty("topic", "mitch")
           })
         })
     });
-    test('200: returns articles sorted by comment', () => {
+    test('200: returns articles with query topic of cats', () => {
       return request(app)
-        .get("/api/articles?topic=mitch")
+        .get("/api/articles?topic=cats")
         .expect(200)
-        .then(({body: { articles } }) => {
-          expect(articles).toHaveLength(4)
+        .then(({ body: { articles } }) => {
+          console.log(articles);
+          expect(articles).toHaveLength(1)
           articles.forEach(article => {
-            expect(article).toHaveProperty("topic", "mitch")
+            expect(article).toHaveProperty("topic", "cats")
           })
+        })
+    });
+    test('404: non-existant topic query', () => {
+      return request(app)
+        .get("/api/articles?topic=test")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          console.log(message);
+          expect(message).toBe("Article topic not found. Valid topic queries: mitch and cats")
+        })
+    });
+    test("200: returns articles sorted by comment_count with default order", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_count")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          console.log(articles);
+          expect(articles).toBeSortedBy("comment_count", { descending: true });
+        });
+    });
+    test('400: invalid sort by query', () => {
+      return request(app)
+        .get("/api/articles?sort_by=test")
+        .expect(400)
+        .then(({ body: {message} }) => {
+          expect(message).toBe('Invalid sort query. Valid queries: article_id, title, topic, author, body, created_at, article_img_url, comment_count');
+        })
+    });
+    test("200: returns articles in ascending order with default sorty by (created_at)", () => {
+      return request(app)
+        .get("/api/articles?order=asc")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("created_at", { descending: false });
+        });
+    });
+    test('400: invalid order query', () => {
+      return request(app)
+        .get("/api/articles?order=test")
+        .expect(400)
+        .then(({ body: {message} }) => {
+          expect(message).toBe('Invalid order query. Valid queries: asc, desc');
         })
     });
   });
