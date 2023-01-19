@@ -107,15 +107,76 @@ describe('App', () => {
         .get("/api/articles?sort_by=comment_count")
         .expect(200)
         .then(({ body: { articles } }) => {
-          console.log(articles);
           expect(articles).toBeSortedBy("comment_count", { descending: true });
+        });
+    });
+    test("200: returns articles sorted by all valid sort by values with default order", () => {
+      return request(app)
+        .get("/api/articles?sort_by=comment_count")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toBeSortedBy("comment_count", { descending: true });
+          return request(app)
+            .get("/api/articles?sort_by=article_img_url")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles).toBeSortedBy("article_img_url", { descending: true });
+              return request(app)
+                .get("/api/articles?sort_by=created_at")
+                .expect(200)
+                .then(({ body: { articles } }) => {
+                  expect(articles).toBeSortedBy("created_at", { descending: true });
+                  return request(app)
+                    .get("/api/articles?sort_by=body")
+                    .expect(200)
+                    .then(({ body: { articles } }) => {
+                      expect(articles).toBeSortedBy("body", { descending: true });
+                      return request(app)
+                        .get("/api/articles?sort_by=author")
+                        .expect(200)
+                        .then(({ body: { articles } }) => {
+                          expect(articles).toBeSortedBy("author", { descending: true });
+                          return request(app)
+                            .get("/api/articles?sort_by=topic")
+                            .expect(200)
+                            .then(({ body: { articles } }) => {
+                              expect(articles).toBeSortedBy("topic", { descending: true });
+                              return request(app)
+                                .get("/api/articles?sort_by=created_at")
+                                .expect(200)
+                                .then(({ body: { articles } }) => {
+                                  expect(articles).toBeSortedBy("created_at", { descending: true });
+                                  return request(app)
+                                    .get("/api/articles?sort_by=title")
+                                    .expect(200)
+                                    .then(({ body: { articles } }) => {
+                                      expect(articles).toBeSortedBy("title", { descending: true });
+                                      return request(app)
+                                        .get("/api/articles?sort_by=article_id")
+                                        .expect(200)
+                                        .then(({ body: { articles } }) => {
+                                          expect(articles).toBeSortedBy("article_id", { descending: true });
+                                          return request(app)
+                                            .get("/api/articles?sort_by=topic")
+                                            .expect(200)
+                                            .then(({ body: { articles } }) => {
+                                              expect(articles).toBeSortedBy("topic", { descending: true });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
         });
     });
     test('400: invalid sort by query', () => {
       return request(app)
         .get("/api/articles?sort_by=test")
         .expect(400)
-        .then(({ body: {message} }) => {
+        .then(({ body: { message } }) => {
           expect(message).toBe('Invalid sort query. Valid queries: article_id, title, topic, author, body, created_at, article_img_url, comment_count');
         })
     });
@@ -131,7 +192,7 @@ describe('App', () => {
       return request(app)
         .get("/api/articles?order=test")
         .expect(400)
-        .then(({ body: {message} }) => {
+        .then(({ body: { message } }) => {
           expect(message).toBe('Invalid order query. Valid queries: asc, desc');
         })
     });
