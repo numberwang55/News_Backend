@@ -7,17 +7,37 @@ exports.fetchTopics = () => {
     })
 }
 
-exports.fetchArticles = () => {
-    const queryStr = `
-    SELECT articles.*, COUNT(comment_id) AS comment_count 
+exports.fetchArticles = (topic, sort_by = "created_at", order = "desc") => {
+    const queryValues = []
+    const validSortByQueries = ['article_id', 'title', 'topic', 'author', 'body', 'created_at', 'article_img_url', 'comment_count']
+    const validOrderQueries = ['asc', 'desc']
+    const validTopicQueries = ["mitch", "cats"];
+    let queryStr = `
+    SELECT articles.*, COUNT(comment_id)::INT AS comment_count 
     FROM articles
-    JOIN comments
+    LEFT JOIN comments
     ON articles.article_id = comments.article_id
-    GROUP BY articles.article_id
-    ORDER BY created_at DESC;
     `;
-    return db.query(queryStr).then((result) => {
-        return result.rows;
+
+    if (!validSortByQueries.includes(sort_by)) {
+        return Promise.reject({ status: 400, msg: `Invalid sort query. Valid queries: ${validSortByQueries.join(", ")}` });
+    }
+    if (!validOrderQueries.includes(order)) {
+        return Promise.reject({ status: 400, msg: `Invalid order query. Valid queries: ${validOrderQueries.join(", ")}` });
+    }
+
+    if (topic) {
+        queryStr += ` WHERE topic = $1 `;
+        queryValues.push(topic);
+    }
+    queryStr += ` GROUP BY articles.article_id`;
+    queryStr += ` ORDER BY ${sort_by} ${order.toUpperCase()};`;
+
+    return db.query(queryStr, queryValues).then(({ rows: articles, rowCount }) => {
+        if (rowCount === 0 && !validTopicQueries.includes(topic)) {
+            return Promise.reject({ status: 404, msg: `Article topic not found. Valid topic queries: ${validTopicQueries.join(" and ")}` });
+        }
+        return articles;
     })
 }
 
@@ -33,8 +53,9 @@ exports.fetchArticleById = (id) => {
     return db.query(queryStr, [id]).then((result) => {
         if (result.rowCount === 0) {
             return Promise.reject({ status: 404, msg: "Article Not Found" });
+        } else {
+            return result.rows[0]
         }
-        return result.rows[0]
     })
 }
 
@@ -77,7 +98,7 @@ exports.updateArticleByArticleId = (id, inc_votes) => {
     return db.query(quesryStr, [inc_votes, id]).then((result) => {
         if (result.rowCount === 0) {
             return Promise.reject({ status: 404, msg: "Article Not Found" });
-        } 
+        }
         else return result.rows[0]
     })
 }
