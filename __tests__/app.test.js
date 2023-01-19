@@ -457,14 +457,30 @@ describe('App', () => {
   describe('DELETE /api/comments/:comment_id', () => {
     test('204: deletes comment for given id', () => {
       return request(app)
-        .delete("/api/comments/16")
-        .expect(204)
-        .then(() => {
+        .get("/api/articles/6/comments")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          const articleToDelete = {
+            body: "This is a bad article name",
+            votes: 1,
+            author: "butter_bridge",
+            article_id: 6,
+            created_at: "2020-10-11T15:23:00.000Z",
+            comment_id : 16
+          }
+          expect(comments).toHaveLength(1)
+          expect(comments[0]).toMatchObject(articleToDelete)
           return request(app)
-            .get("/api/articles/6/comments")
-            .expect(200)
-            .then(({ body: { comments } }) => {
-              expect(comments).toHaveLength(0)
+            .delete("/api/comments/16")
+            .expect(204)
+            .then(() => {
+              return request(app)
+                .get("/api/articles/6/comments")
+                .expect(200)
+                .then(({ body: { comments } }) => {
+                  expect(comments).toHaveLength(0)
+                  expect(comments[0]).toBe(undefined)
+                })
             })
         })
     });
