@@ -9,7 +9,7 @@ exports.fetchTopics = () => {
 
 exports.fetchArticles = () => {
     const queryStr = `
-    SELECT articles.*, COUNT(comment_id) as comment_count 
+    SELECT articles.*, COUNT(comment_id) AS comment_count 
     FROM articles
     JOIN comments
     ON articles.article_id = comments.article_id
@@ -23,7 +23,7 @@ exports.fetchArticles = () => {
 
 exports.fetchArticleById = (id) => {
     const queryStr = `
-        SELECT articles.*, COUNT(comment_id)::INT as comment_count 
+        SELECT articles.*, COUNT(comment_id)::INT AS comment_count 
         FROM articles
         LEFT JOIN comments
         ON articles.article_id = comments.article_id
