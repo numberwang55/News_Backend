@@ -6,7 +6,7 @@ const {
     addCommentByArticleId,
     updateArticleByArticleId,
     fetchUsers,
-    removeComment
+    removeCommentByCommentId
 } = require("../models");
 
 exports.getTopics = (request, response, next) => {
@@ -62,10 +62,10 @@ exports.getUsers = (request, response, next) => {
         }).catch(next)
 }
 
-exports.deleteComment = (request, response, next) => {
+exports.deleteCommentByCommentId = (request, response, next) => {
     const { comment_id } = request.params
-    removeComment(comment_id)
-        .then(() => {
-            response.status(204).send()
+    removeCommentByCommentId(comment_id)
+        .then((res) => {
+            response.sendStatus(204)
         }).catch(next)
 }

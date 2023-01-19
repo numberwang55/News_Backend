@@ -457,17 +457,32 @@ describe('App', () => {
   describe('DELETE /api/comments/:comment_id', () => {
     test('204: deletes comment for given id', () => {
       return request(app)
-        .delete("/api/comments/1")
+        .delete("/api/comments/16")
         .expect(204)
-        // .then(() => {
-        //   return request(app)
-        //     .get("/api/articles/1/comments")
-        //     .expect(404)
-        //     .then(({body: {message}}) => {
-        //       console.log(body);
-        //       expect(message).toBe("Article Not Found")
-        //     })
-        // })
+        .then(() => {
+          return request(app)
+            .get("/api/articles/6/comments")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments).toHaveLength(0)
+            })
+        })
+    });
+    test('404: id not found', () => {
+      return request(app)
+        .delete("/api/comments/100")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Comment with ID of 100 not found")
+        })
+    });
+    test('400: invalid id type', () => {
+      return request(app)
+        .delete("/api/comments/abc")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request")
+        })
     });
   });
 });
