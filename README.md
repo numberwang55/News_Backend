@@ -21,15 +21,22 @@ In order to install the required dependencies please run:
 $ npm i
 ```
 
-| Development Dependencies |    | Production Dependencies |
-| ------------------------ |    | ----------------------- |
-| Package       |  Version |    |  Package    |  Version  |
-| husky         |   8.0.2  |    |  dotenv     |  16.0.0   |
-| jest          |   27.5.1 |    |  express    |  4.18.2   |
-| jest-extended |   2.0.0  |    |  pg         |  8.8.0    |
+| Development Dependencies |    
+| ------------------------ |    
+| Package       |  Version |   
+| husky         |   8.0.2  |    
+| jest          |   27.5.1 |    
+| jest-extended |   2.0.0  |    
 | jest-sorted   |   1.0.14 |
 | pg-format     |   1.0.4  |
 | supertest     |   6.3.3  |
+
+| Production Dependencies |
+| ----------------------- |
+|  Package    |  Version  |
+|  dotenv     |  16.0.0   |
+|  express    |  4.18.2   |
+|  pg         |  8.8.0    |
 
 ### Environment Variables
 
@@ -41,12 +48,11 @@ In order to access the test & dev databases, add two files with the following:
 ### Setup & Seed Database
 
 In order to run the app please first setup the database and then seed the database using the below commands:
-
 ```
 $ npm run setup-dbs
+
 $ npm run seed
 ```
-
 ### Testing
 
 To run the unit tests please use the below command:
@@ -61,6 +67,6 @@ To run the integration tests please use this command:
 $ npm t app.test.js
 ```
 
-### Minimum Version
+## Minimum Version
 
 This API was built using Node.js version 19.1.0 and Postgres version 14.6. It is recommended, to ensure stability and functionality, these versions or higher are used. 
