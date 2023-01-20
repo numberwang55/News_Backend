@@ -77,6 +77,10 @@
   "POST /api/articles/:article_id/comments": {
     "description": "adds a new comment to the specified artice id",
     "parameter": "article_id: Number",
+    "exampleBody": {
+      "username": "icellusedkars",
+      "body": "A new comment"
+    },
     "exampleResponse": {
       "comment": [
         {
@@ -93,6 +97,7 @@
   "PATCH /api/articles/:article_id": {
     "description": "updates the votes property for an existing comment at the specified artice id and serves the updated article",
     "parameter": "article_id: Number",
+    "exampleBody": { "inc_votes": 1 },
     "exampleResponse": {
       "updated_article": {
         "article_id": 1,
