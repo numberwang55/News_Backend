@@ -51,7 +51,7 @@
     }
   },
   "GET /api/articles/:article_id/comments": {
-    "description": "serves an comments array for the specific article id",
+    "description": "serves a comments array for the specific article id",
     "parameter": "article_id: Number",
     "exampleResponse": {
       "comments": [
@@ -91,7 +91,7 @@
     }
   },
   "PATCH /api/articles/:article_id": {
-    "description": "updates the votes property for an existing comment at the specified artice id",
+    "description": "updates the votes property for an existing comment at the specified artice id and serves the updated article",
     "parameter": "article_id: Number",
     "exampleResponse": {
       "updated_article": {
