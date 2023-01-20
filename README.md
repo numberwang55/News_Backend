@@ -19,7 +19,7 @@ In order to install the required dependencies please run:
 ```
 $ npm i
 ```
-#### Development Dependencies 
+##### Development Dependencies 
 
 |`Package`     | `Version` |     
 | -------------|-----------|     
@@ -30,13 +30,14 @@ $ npm i
 | pg-format    |  1.0.4    |
 | supertest    |  6.3.3    |
 
-#### Production Dependencies
+##### Production Dependencies
 
 | `Package`   | `Version` |
 | ------------|---------- |
 |  dotenv     |  16.0.0   |
 |  express    |  4.18.2   |
 |  pg         |  8.8.0    |
+
 
 ### Environment Variables
 
