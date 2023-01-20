@@ -13,14 +13,12 @@ Please clone the API project inside of your chosen directory using the command b
 ```
 $ git clone https://github.com/numberwang55/News_Backend.git
 ```
-
 ### Dependencies
 
 In order to install the required dependencies please run:
 ```
 $ npm i
 ```
-
 #### Development Dependencies 
 
 |`Package`     | `Version` |     
@@ -62,13 +60,11 @@ To run the unit tests please use the below command:
 ```
 $ npm t utils.test.js
 ```
-
 To run the integration tests please use this command:
 
 ```
 $ npm t app.test.js
 ```
-
 ## Minimum Version
 
 This API was built using Node.js version 19.1.0 and Postgres version 14.6. It is recommended, to ensure stability and functionality, these versions or higher are used. 
