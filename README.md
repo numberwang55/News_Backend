@@ -57,12 +57,10 @@ $ npm run seed
 ### Testing
 
 To run the unit tests please use the below command:
-
 ```
 $ npm t utils.test.js
 ```
 To run the integration tests please use this command:
-
 ```
 $ npm t app.test.js
 ```
