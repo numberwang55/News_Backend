@@ -466,6 +466,22 @@ describe('App', () => {
             })
         })
     })
+    test('404: id not found', () => {
+      return request(app)
+        .delete("/api/comments/100")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Comment with ID of 100 not found")
+        })
+    });
+    test('400: invalid id type', () => {
+      return request(app)
+        .delete("/api/comments/abc")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request")
+        })
+    });
   });
   describe('GET /api', () => {
     test('200: returns with JSON for the api endpoints and their details', () => {
