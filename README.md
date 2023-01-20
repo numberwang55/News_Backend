@@ -23,6 +23,8 @@ In order to install the required dependencies please run:
 ```
 $ npm i
 ```
+Below are the dependencies for this project.
+
 ##### Development Dependencies 
 
 |`Package`     | `Version` |     
@@ -47,15 +49,14 @@ $ npm i
 
 In order to access the test & dev databases, add two files with the following: 
 
-1. .env.test - 'PGDATABASE=nc_news_test'
-2. .env.development - 'PGDATABASE=nc_news'
+1 .env.test - 'PGDATABASE=nc_news_test'
+2 .env.development - 'PGDATABASE=nc_news'
 
 ### Setup & Seed Database
 
 In order to run the app please first setup the database and then seed the database using the below commands:
 ```
 $ npm run setup-dbs
-
 $ npm run seed
 ```
 ### Testing
