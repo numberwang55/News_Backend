@@ -72,8 +72,7 @@ exports.deleteCommentByCommentId = (request, response, next) => {
 }
 
 exports.getApiEndpoints = (request, response, next) => {
-    fetchApiEndpoints().then((result) => {
-        const endpoints = JSON.stringify(result)
+    fetchApiEndpoints().then((endpoints) => {
         response.status(200).send({ endpoints })
     }).catch(next)
 }
