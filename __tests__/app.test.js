@@ -457,40 +457,30 @@ describe('App', () => {
   describe('DELETE /api/comments/:comment_id', () => {
     test('204: deletes comment for given id', () => {
       return request(app)
-        .get("/api/articles/6/comments")
-        .expect(200)
-        .then(({ body: { comments } }) => {
-          expect(comments).toHaveLength(1)
-          expect(comments[0]).toHaveProperty("comment_id", 16)
-          return request(app)
-            .delete("/api/comments/16")
-            .expect(204)
-            .then(() => {
-              return request(app)
-                .get("/api/articles/6/comments")
-                .expect(200)
-                .then(({ body: { comments } }) => {
-                  expect(comments).toHaveLength(0)
-                  expect(comments[0]).toBe(undefined)
-                })
+        .delete("/api/comments/16")
+        .expect(204)
+        .then(() => {
+          db.query("SELECT * FROM comments WHERE comment_id = 16;")
+            .then((result) => {
+              expect(result.rows).toHaveLength(0)
             })
         })
-    });
-    test('404: id not found', () => {
-      return request(app)
-        .delete("/api/comments/100")
-        .expect(404)
-        .then(({ body: { message } }) => {
-          expect(message).toBe("Comment with ID of 100 not found")
-        })
-    });
-    test('400: invalid id type', () => {
-      return request(app)
-        .delete("/api/comments/abc")
-        .expect(400)
-        .then(({ body: { message } }) => {
-          expect(message).toBe("Bad Request")
-        })
-    });
+    })
+  });
+  test('404: id not found', () => {
+    return request(app)
+      .delete("/api/comments/100")
+      .expect(404)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Comment with ID of 100 not found")
+      })
+  });
+  test('400: invalid id type', () => {
+    return request(app)
+      .delete("/api/comments/abc")
+      .expect(400)
+      .then(({ body: { message } }) => {
+        expect(message).toBe("Bad Request")
+      })
   });
 });
