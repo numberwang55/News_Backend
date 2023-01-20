@@ -6,8 +6,10 @@ const {
     addCommentByArticleId,
     updateArticleByArticleId,
     fetchUsers,
-    removeCommentByCommentId
+    removeCommentByCommentId,
+    fetchApiEndpoints
 } = require("../models");
+const endpoints = require("../endpoints.json")
 
 exports.getTopics = (request, response, next) => {
     fetchTopics().then((topics) => {
@@ -65,7 +67,14 @@ exports.getUsers = (request, response, next) => {
 exports.deleteCommentByCommentId = (request, response, next) => {
     const { comment_id } = request.params
     removeCommentByCommentId(comment_id)
-        .then((res) => {
+        .then(() => {
             response.sendStatus(204)
         }).catch(next)
+}
+
+exports.getApiEndpoints = (request, response, next) => {
+    fetchApiEndpoints().then((result) => {
+        const endpoints = JSON.stringify(result)
+        response.status(200).send({ endpoints })
+    }).catch(next)
 }

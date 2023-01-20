@@ -8,7 +8,8 @@ const {
   postCommentByArticleId,
   patchArticleByArticleId,
   getUsers,
-  deleteCommentByCommentId
+  deleteCommentByCommentId,
+  getApiEndpoints
 } = require("./controllers")
 const {
   defaultErrorHandler,
@@ -27,6 +28,7 @@ app.post("/api/articles/:article_id/comments", postCommentByArticleId)
 app.patch("/api/articles/:article_id", patchArticleByArticleId)
 app.get("/api/users", getUsers)
 app.delete("/api/comments/:comment_id", deleteCommentByCommentId)
+app.get("/api", getApiEndpoints)
 
 defaultErrorHandler(app)
 app.use(customErrorHAndler)

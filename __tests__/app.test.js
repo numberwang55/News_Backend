@@ -357,7 +357,7 @@ describe('App', () => {
         });
     });
   })
-  describe('PATCH /api/articles/:artice_id', () => {
+  describe('PATCH /api/articles/:article_id', () => {
     test('200: responds with updated article with updated vote property incremented', () => {
       return request(app)
         .patch("/api/articles/1")
@@ -466,21 +466,41 @@ describe('App', () => {
             })
         })
     })
+    test('404: id not found', () => {
+      return request(app)
+        .delete("/api/comments/100")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Comment with ID of 100 not found")
+        })
+    });
+    test('400: invalid id type', () => {
+      return request(app)
+        .delete("/api/comments/abc")
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("Bad Request")
+        })
+    });
   });
-  test('404: id not found', () => {
-    return request(app)
-      .delete("/api/comments/100")
-      .expect(404)
-      .then(({ body: { message } }) => {
-        expect(message).toBe("Comment with ID of 100 not found")
-      })
-  });
-  test('400: invalid id type', () => {
-    return request(app)
-      .delete("/api/comments/abc")
-      .expect(400)
-      .then(({ body: { message } }) => {
-        expect(message).toBe("Bad Request")
-      })
+  describe('GET /api', () => {
+    test('200: returns with JSON for the api endpoints and their details', () => {
+      return request(app)
+        .get("/api")
+        .expect(200)
+        .then(({ body: { endpoints } }) => {
+          const parsedEndpoints = JSON.parse(endpoints)
+          expect(typeof parsedEndpoints).toBe("object")
+          expect(Object.keys(parsedEndpoints)).toHaveLength(9);
+          expect(parsedEndpoints).toHaveProperty('GET /api');
+          expect(parsedEndpoints).toHaveProperty('GET /api/topics');
+          expect(parsedEndpoints).toHaveProperty('GET /api/articles');
+          expect(parsedEndpoints).toHaveProperty('GET /api/articles/:article_id');
+          expect(parsedEndpoints).toHaveProperty('GET /api/articles/:article_id/comments');
+          expect(parsedEndpoints).toHaveProperty('POST /api/articles/:article_id/comments');
+          expect(parsedEndpoints).toHaveProperty('PATCH /api/articles/:article_id');
+          expect(parsedEndpoints).toHaveProperty('GET /api/users');
+        })
+    });
   });
 });
