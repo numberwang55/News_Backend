@@ -21,19 +21,19 @@ In order to install the required dependencies please run:
 $ npm i
 ```
 
-| Development Dependencies |    
-| ------------------------ |    
-| Package       |  Version |   
-| husky         |   8.0.2  |    
-| jest          |   27.5.1 |    
-| jest-extended |   2.0.0  |    
-| jest-sorted   |   1.0.14 |
-| pg-format     |   1.0.4  |
-| supertest     |   6.3.3  |
+| Development Dependencies | 
+|`Package`     | `Version` |     
+| -------------|-----------|     
+| husky        |  8.0.2    |    
+| jest         |  27.5.1   |    
+| jest-extended|  2.0.0    |    
+| jest-sorted  |  1.0.14   |
+| pg-format    |  1.0.4    |
+| supertest    |  6.3.3    |
 
 | Production Dependencies |
-| ----------------------- |
-|  Package    |  Version  |
+| `Package`   | `Version` |
+| ------------|---------- |
 |  dotenv     |  16.0.0   |
 |  express    |  4.18.2   |
 |  pg         |  8.8.0    |
