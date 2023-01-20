@@ -9,7 +9,6 @@ const {
     removeCommentByCommentId,
     fetchApiEndpoints
 } = require("../models");
-const endpoints = require("../endpoints.json")
 
 exports.getTopics = (request, response, next) => {
     fetchTopics().then((topics) => {
