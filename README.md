@@ -5,6 +5,10 @@
 ## Summary
 An API providing news articles and associated comments built using the expressjs framework and postgreSQL. The database is hosted on ElephantSQL and the application is hosted on Render.
 
+## Minimum Version
+
+This API was built using Node.js version 19.1.0 and Postgres version 14.6. It is recommended, to ensure stability and functionality, these versions or higher are used. 
+
 ## Set-up
 
 ### Clone
@@ -64,6 +68,3 @@ To run the integration tests please use this command:
 ```
 $ npm t app.test.js
 ```
-## Minimum Version
-
-This API was built using Node.js version 19.1.0 and Postgres version 14.6. It is recommended, to ensure stability and functionality, these versions or higher are used. 
