@@ -1,5 +1,6 @@
 const format = require("pg-format");
 const db = require("../db/connection");
+const fs = require("fs/promises");
 
 exports.fetchTopics = () => {
     return db.query(`SELECT * FROM topics`).then((result) => {
@@ -124,4 +125,11 @@ exports.removeCommentByCommentId = (id) => {
         }
         return result.rows[0]
     })
+}
+
+exports.fetchApiEndpoints = () => {
+    return fs.readFile("endpoints.json", "utf-8")
+        .then((result) => {
+            return JSON.parse(result)
+        })
 }

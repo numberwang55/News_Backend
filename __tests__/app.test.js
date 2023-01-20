@@ -499,16 +499,17 @@ describe('App', () => {
         .get("/api")
         .expect(200)
         .then(({ body: { endpoints } }) => {
-          expect(typeof endpoints).toBe("object")
-          expect(Object.keys(endpoints)).toHaveLength(9);
-          expect(endpoints).toHaveProperty('GET /api');
-          expect(endpoints).toHaveProperty('GET /api/topics');
-          expect(endpoints).toHaveProperty('GET /api/articles');
-          expect(endpoints).toHaveProperty('GET /api/articles/:article_id');
-          expect(endpoints).toHaveProperty('GET /api/articles/:article_id/comments');
-          expect(endpoints).toHaveProperty('POST /api/articles/:article_id/comments');
-          expect(endpoints).toHaveProperty('PATCH /api/articles/:article_id');
-          expect(endpoints).toHaveProperty('GET /api/users');
+          const parsedEndpoints = JSON.parse(endpoints)
+          expect(typeof parsedEndpoints).toBe("object")
+          expect(Object.keys(parsedEndpoints)).toHaveLength(9);
+          expect(parsedEndpoints).toHaveProperty('GET /api');
+          expect(parsedEndpoints).toHaveProperty('GET /api/topics');
+          expect(parsedEndpoints).toHaveProperty('GET /api/articles');
+          expect(parsedEndpoints).toHaveProperty('GET /api/articles/:article_id');
+          expect(parsedEndpoints).toHaveProperty('GET /api/articles/:article_id/comments');
+          expect(parsedEndpoints).toHaveProperty('POST /api/articles/:article_id/comments');
+          expect(parsedEndpoints).toHaveProperty('PATCH /api/articles/:article_id');
+          expect(parsedEndpoints).toHaveProperty('GET /api/users');
         })
     });
   });
