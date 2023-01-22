@@ -3,7 +3,7 @@
 ## Available at - https://news-backend-njz3.onrender.com
 
 ## Summary
-An API providing news articles and associated comments built using the expressjs framework and postgreSQL. The database is hosted on ElephantSQL and the application is hosted on Render.
+An example of a RESTful API written in JavaScript, providing news articles and associated comments. Project uses the Express JS framework and postgreSQL for the database. The database is hosted on ElephantSQL and the application is hosted on Render.
 
 ## Minimum Version
 
