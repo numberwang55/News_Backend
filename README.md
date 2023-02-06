@@ -1,6 +1,6 @@
 # Northcoders News API
 
-## Available at - https://news-backend-njz3.onrender.com
+## Available at - https://news-backend-njz3.onrender.com/api
 
 ## Summary
 An example of a RESTful API written in JavaScript, providing news articles and associated comments. Project uses the Express JS framework and postgreSQL for the database. The database is hosted on ElephantSQL and the application is hosted on Render.
