@@ -9,7 +9,7 @@ exports.fetchTopics = () => {
 
 exports.fetchArticles = (topic, sort_by = "created_at", order = "desc") => {
     const queryValues = []
-    const validSortByQueries = ['article_id', 'title', 'topic', 'author', 'body', 'created_at', 'article_img_url', 'comment_count']
+    const validSortByQueries = ['article_id', 'title', 'topic', 'author', 'body', 'created_at', 'article_img_url', 'comment_count', 'votes']
     const validOrderQueries = ['asc', 'desc']
     const validTopicQueries = ["mitch", "cats"];
     let queryStr = `

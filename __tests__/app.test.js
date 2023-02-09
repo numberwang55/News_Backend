@@ -175,7 +175,7 @@ describe('App', () => {
         .get("/api/articles?sort_by=test")
         .expect(400)
         .then(({ body: { message } }) => {
-          expect(message).toBe('Invalid sort query. Valid queries: article_id, title, topic, author, body, created_at, article_img_url, comment_count');
+          expect(message).toBe('Invalid sort query. Valid queries: article_id, title, topic, author, body, created_at, article_img_url, comment_count, votes');
         })
     });
     test("200: returns articles in ascending order with default sorty by (created_at)", () => {
